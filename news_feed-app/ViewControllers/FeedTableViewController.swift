@@ -10,6 +10,8 @@ import UIKit
 
 class FeedTableViewController: UITableViewController {
     
+    // MARK: - Properties
+    
     var newsList = [News]()
     var filteredNews = [News]()
     let searchController = UISearchController(searchResultsController: nil)
@@ -19,9 +21,14 @@ class FeedTableViewController: UITableViewController {
     var isFiltering: Bool {
       return searchController.isActive && !isSearchBarEmpty
     }
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set properties for activity indicator
+        self.activityIndicatorView.hidesWhenStopped = true
+        self.activityIndicatorView.startAnimating()
         
         //Load news from network
         self.loadNewsFeed()
@@ -54,6 +61,7 @@ class FeedTableViewController: UITableViewController {
             if let news = news {
                 DispatchQueue.main.async {
                     self.newsList = news.articles
+                    self.activityIndicatorView.stopAnimating()
                     self.tableView.reloadData()
                 }
             } else {
