@@ -38,7 +38,7 @@ class NetworkService {
         task.resume()
     }
     static func fetchNewsImage(news: News, completionHandler: @escaping (_ data: Data?) -> () ) {
-        if let url = URL(string: news.urlToImage!) {
+        if let url = URL(string: news.urlToImage ?? "") {
         let session = URLSession.shared
             
         let dataTask = session.dataTask(with: url) { (data, response, error) in

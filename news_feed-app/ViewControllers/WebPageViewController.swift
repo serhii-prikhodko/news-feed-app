@@ -7,13 +7,25 @@
 //
 
 import UIKit
+import WebKit
 
 class WebPageViewController: UIViewController {
+    
+    var url: String?
 
+    @IBOutlet weak var webView: WKWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        if let url = self.url {
+            self.title = url
+            self.loadPage(url)
+        }
+    }
+    func loadPage(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
     }
     
 

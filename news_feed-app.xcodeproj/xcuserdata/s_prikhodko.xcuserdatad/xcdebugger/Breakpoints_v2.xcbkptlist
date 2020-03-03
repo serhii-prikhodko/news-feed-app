@@ -88,15 +88,79 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "50E89C6E-BAAC-42AA-9503-B1743F6671F9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "news_feed-app/ViewControllers/FeedTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "loadNewsFeed()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "50E89C6E-BAAC-42AA-9503-B1743F6671F9 - e89bd2833515b709"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;news_feed_app.NewsList&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in news_feed_app.FeedTableViewController.loadNewsFeed() -&gt; ()"
+                  moduleName = "news_feed-app"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/s_prikhodko/swift_code/news_feed-app/news_feed-app/ViewControllers/FeedTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "787">
+               </Location>
+               <Location
+                  uuid = "50E89C6E-BAAC-42AA-9503-B1743F6671F9 - 3802119eedf9b5a4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;news_feed_app.NewsList&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in news_feed_app.FeedTableViewController.loadNewsFeed() -&gt; ()"
+                  moduleName = "news_feed-app"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/s_prikhodko/swift_code/news_feed-app/news_feed-app/ViewControllers/FeedTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "87">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D9F0837-A93F-43A4-AB69-DD795E3D1D44"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "news_feed-app/ViewControllers/FeedTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "updateSearchResults(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1796E5B9-F39F-42B6-8E73-A97D7AA99F4E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "news_feed-app/ViewControllers/FeedTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "loadNewsFeed()"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "filterContentForSearchText(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

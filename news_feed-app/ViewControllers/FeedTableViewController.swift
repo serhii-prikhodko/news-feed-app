@@ -11,23 +11,56 @@ import UIKit
 class FeedTableViewController: UITableViewController {
     
     var newsList = [News]()
-
+    var filteredNews = [News]()
+    let searchController = UISearchController(searchResultsController: nil)
+    var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    var isFiltering: Bool {
+      return searchController.isActive && !isSearchBarEmpty
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //Load news from network
         self.loadNewsFeed()
-        print(self.newsList)
+        self.title = "Top Ukraine News"
+        self.prepareSearchController()
     }
-
+    
+    // MARK: - Functions
+    func prepareSearchController() {
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.placeholder = "Search News"
+        navigationItem.searchController = self.searchController
+        definesPresentationContext = true
+    }
+    func filterContentForSearchText(_ searchText: String) {
+        self.filteredNews = [News]()
+        for news in self.newsList {
+            if let title = news.title {
+                if title.lowercased().contains(searchText.lowercased()) {
+                    self.filteredNews.append(news)
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.isFiltering {
+            
+            return self.filteredNews.count
+        }
         
         return self.newsList.count
     }
@@ -36,66 +69,44 @@ class FeedTableViewController: UITableViewController {
             if let news = news {
                 DispatchQueue.main.async {
                     self.newsList = news.articles
+                    self.tableView.reloadData()
                 }
             } else {
                 print ("- fetch eror - \(#function) )")
             }
         }
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! SingleNewsTableViewCell
+        
+        if self.isFiltering {
+            cell.update(with: self.filteredNews[indexPath.row])
+        } else {
+            cell.update(with: self.newsList[indexPath.row])
+        }
+        
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let newViewController = storyBoard.instantiateViewController(withIdentifier: "webPageID") as! WebPageViewController
+        //Transfer data to next view controller
+        if self.isFiltering {
+            newViewController.url = (self.filteredNews[indexPath.row].url)
+        } else {
+            newViewController.url = (self.newsList[indexPath.row].url)
+        }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        self.navigationController?.pushViewController(newViewController, animated: true)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+}
+extension FeedTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        self.filterContentForSearchText(searchBar.text!)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
