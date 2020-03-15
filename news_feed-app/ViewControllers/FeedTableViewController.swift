@@ -19,7 +19,7 @@ class FeedTableViewController: UITableViewController {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     var isFiltering: Bool {
-      return searchController.isActive && !isSearchBarEmpty
+        return searchController.isActive && !isSearchBarEmpty
     }
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
@@ -45,17 +45,14 @@ class FeedTableViewController: UITableViewController {
         definesPresentationContext = true
     }
     func filterContentForSearchText(_ searchText: String) {
-        self.filteredNews = [News]()
-        for news in self.newsList {
-            if let title = news.title {
-                if title.lowercased().contains(searchText.lowercased()) {
-                    self.filteredNews.append(news)
-                }
-            }
+        if searchText.isEmpty {
+            self.filteredNews = self.newsList
+        } else {
+            self.filteredNews = self.newsList.filter
+                {$0.title?.lowercased().contains(searchText.lowercased()) ?? false}
         }
         tableView.reloadData()
     }
-    
     func loadNewsFeed() {
         NetworkService.fetchNews() { (news: NewsList?, error: Error?) in
             if let news = news {
@@ -65,9 +62,16 @@ class FeedTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
-                print ("- fetch eror - \(#function) )")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Warning", message: error?.localizedDescription ?? "Something went wrong, try again later", style: .alert)
+                }
             }
         }
+    }
+    func showAlert (title: String, message: String, style: UIAlertController.Style){
+        let alertController = UIAlertController (title: title, message: message, preferredStyle: style)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Table view data source
@@ -85,7 +89,7 @@ class FeedTableViewController: UITableViewController {
         
         return self.newsList.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! SingleNewsTableViewCell
         
@@ -108,7 +112,7 @@ class FeedTableViewController: UITableViewController {
         } else {
             newViewController.url = (self.newsList[indexPath.row].url)
         }
-
+        
         self.navigationController?.pushViewController(newViewController, animated: true)
     }
     
@@ -116,6 +120,6 @@ class FeedTableViewController: UITableViewController {
 extension FeedTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        self.filterContentForSearchText(searchBar.text!)
+        self.filterContentForSearchText(searchBar.text ?? "")
     }
 }

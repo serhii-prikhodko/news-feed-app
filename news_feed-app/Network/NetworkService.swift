@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class NetworkService {
     static var API_KEY = "0e246b48d2634fd2be285b8773822aef"
@@ -27,11 +28,10 @@ class NetworkService {
                     completion(articles, nil)
                     
                 } catch let error as NSError {
-                    print("ERROR: \(error.localizedDescription)")
                     completion(nil, error)
                 }
             } else {
-               completion(nil, nil)
+                completion(nil, error)
             }
         }
         
@@ -39,17 +39,18 @@ class NetworkService {
     }
     static func fetchNewsImage(news: News, completionHandler: @escaping (_ data: Data?) -> () ) {
         if let url = URL(string: news.urlToImage ?? "") {
-        let session = URLSession.shared
-            
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print("ERROR: \(error!.localizedDescription)")
-                completionHandler(nil)
-            } else {
-                completionHandler(data)
+            if UIApplication.shared.canOpenURL(url) { // check that image URL can be opened
+                let session = URLSession.shared
+                let dataTask = session.dataTask(with: url) { (data, response, error) in
+                    if error != nil {
+                        //print("ERROR: \(error!.localizedDescription)")
+                        completionHandler(nil)
+                    } else {
+                        completionHandler(data)
+                    }
+                }
+                dataTask.resume()
             }
-        }
-        dataTask.resume()
         }
     }
 }
